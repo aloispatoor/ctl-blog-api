@@ -4,7 +4,7 @@ from fastapi import FastAPI
 
 from app.database.db import engine
 from app.database.config import settings
-from app.routers import posts
+from app.routers import posts, events
 
 
 # def wait_for_db():
@@ -45,6 +45,7 @@ app = FastAPI(
 
 
 app.include_router(posts.router, prefix="/api/v1", tags=["posts"])
+app.include_router(events.router, prefix="/api/v1", tags=["events"])
 
 @app.get("/")
 async def root():
