@@ -1,6 +1,6 @@
 from datetime import datetime
-from sqlmodel import Field, SQLModel
-
+from typing import TYPE_CHECKING, Optional
+from sqlmodel import Field, SQLModel, Relationship
 
 class EventBase(SQLModel):
     title: str
@@ -12,6 +12,12 @@ class EventBase(SQLModel):
 
 class Event(EventBase, Table=True):
     id: int | None = Field(default=None, primary_key=True)
+
+    # Foreign Keys
+    author_id: int = Field(foreign_key="user.id")
+
+    # Relationships
+    author: Optional = Relationship(back_populates="posts")
 
 class EventCreate(EventBase):
     pass

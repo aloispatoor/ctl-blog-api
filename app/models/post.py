@@ -1,6 +1,6 @@
-from sqlmodel import Field, SQLModel
+from typing import Optional
+from sqlmodel import Field, SQLModel, Relationship
 from datetime import datetime, timezone
-
 
 class PostBase(SQLModel):
     title: str
@@ -16,6 +16,12 @@ class Post(PostBase, table=True):
         sa_column_kwargs={"onupdate": lambda: datetime.now(timezone.utc)}
     )
 
+    # Foreign Keys
+    author_id: int = Field(foreign_key="user.id")
+
+    # Relationships
+    author: Optional = Relationship(back_populates="posts")
+
 
 class PostCreate(PostBase):
     pass
@@ -29,3 +35,6 @@ class PostUpdate(PostBase):
     title: str | None = None
     content: str | None = None
     published: bool | None = None
+
+class PostWithAuthor(PostPublic):
+    author: "User"
